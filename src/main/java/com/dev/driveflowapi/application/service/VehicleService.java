@@ -1,8 +1,8 @@
 package com.dev.driveflowapi.application.service;
 
-import com.dev.driveflowapi.application.dto.vehicle.CreateVehicleRequest;
-import com.dev.driveflowapi.application.dto.vehicle.UpdateVehicleRequest;
-import com.dev.driveflowapi.application.dto.vehicle.VehicleResponse;
+import com.dev.driveflowapi.application.dto.input.vehicle.CreateVehicleInput;
+import com.dev.driveflowapi.application.dto.input.vehicle.UpdateVehicleInput;
+import com.dev.driveflowapi.application.dto.output.vehicle.VehicleOutput;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
 import com.dev.driveflowapi.domain.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,23 +17,23 @@ public class VehicleService {
     private final VehicleRepository vehicleRepository;
     private final DealerRepository dealerRepository;
 
-    public VehicleResponse createVehicle(
-            CreateVehicleRequest request
+    public VehicleOutput createVehicle(
+             CreateVehicleInput vehicle
     ) {
 
     }
 
-    public VehicleResponse findById(
+    public VehicleOutput findById(
             UUID vehicleId
     ) {
     }
 
-    public List<VehicleResponse> findAll() {
+    public List<VehicleOutput> findAll() {
     }
 
-    public VehicleResponse updateVehicle(
+    public VehicleOutput updateVehicle(
             UUID vehicleId,
-            UpdateVehicleRequest request
+            UpdateVehicleInput request
     ) {
     }
 
@@ -42,7 +42,7 @@ public class VehicleService {
     ) {
     }
 
-    public List<VehicleResponse> findByDealerId(
+    public List<VehicleOutput> findByDealerId(
             UUID dealerId
     ) {
     }

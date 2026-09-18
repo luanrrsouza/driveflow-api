@@ -3,6 +3,9 @@ package com.dev.driveflowapi.application.service;
 import com.dev.driveflowapi.application.dto.dealer.CreateDealerRequest;
 import com.dev.driveflowapi.application.dto.dealer.DealerResponse;
 import com.dev.driveflowapi.application.dto.dealer.UpdateDealerRequest;
+import com.dev.driveflowapi.application.dto.input.dealer.CreateDealerInput;
+import com.dev.driveflowapi.application.dto.input.dealer.UpdateDealerInput;
+import com.dev.driveflowapi.application.dto.output.dealer.DealerOutput;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -15,22 +18,22 @@ public class DealerService {
 
     private final DealerRepository dealerRepository;
 
-    public DealerResponse createDealer(
-            CreateDealerRequest request
+    public DealerOutput createDealer(
+            CreateDealerInput request
     ) {
     }
 
-    public DealerResponse findById(
+    public DealerOutput findById(
             UUID dealerId
     ) {
     }
 
-    public List<DealerResponse> findAll() {
+    public List<DealerOutput> findAll() {
     }
 
-    public DealerResponse updateDealer(
+    public DealerOutput updateDealer(
             UUID dealerId,
-            UpdateDealerRequest request
+            UpdateDealerInput request
     ) {
     }
 

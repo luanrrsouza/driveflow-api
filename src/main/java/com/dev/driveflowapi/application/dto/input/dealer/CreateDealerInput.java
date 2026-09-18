@@ -1,14 +1,10 @@
-package com.dev.driveflowapi.application.dto.dealer;
+package com.dev.driveflowapi.application.dto.input.dealer;
 
-public record UpdateDealerRequest(
+public record CreateDealerInput(
 
         String corporateName,
-
         String cnpj,
-
         String zipCode,
-
         String address
-
 ) {
 }
