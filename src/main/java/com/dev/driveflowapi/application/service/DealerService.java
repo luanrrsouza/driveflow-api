@@ -1,0 +1,44 @@
+package com.dev.driveflowapi.application.service;
+
+import com.dev.driveflowapi.application.dto.dealer.CreateDealerRequest;
+import com.dev.driveflowapi.application.dto.dealer.DealerResponse;
+import com.dev.driveflowapi.application.dto.dealer.UpdateDealerRequest;
+import com.dev.driveflowapi.application.dto.input.dealer.CreateDealerInput;
+import com.dev.driveflowapi.application.dto.input.dealer.UpdateDealerInput;
+import com.dev.driveflowapi.application.dto.output.dealer.DealerOutput;
+import com.dev.driveflowapi.domain.repository.DealerRepository;
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
+
+
+@RequiredArgsConstructor
+public class DealerService {
+
+    private final DealerRepository dealerRepository;
+
+    public DealerOutput createDealer(
+            CreateDealerInput request
+    ) {
+    }
+
+    public DealerOutput findById(
+            UUID dealerId
+    ) {
+    }
+
+    public List<DealerOutput> findAll() {
+    }
+
+    public DealerOutput updateDealer(
+            UUID dealerId,
+            UpdateDealerInput request
+    ) {
+    }
+
+    public void deleteById(
+            UUID dealerId
+    ) {
+    }
+}
