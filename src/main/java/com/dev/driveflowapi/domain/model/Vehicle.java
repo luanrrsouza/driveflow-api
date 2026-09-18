@@ -108,12 +108,35 @@ public class Vehicle {
         }
     }
 
+    public void update(
+            String brand,
+            String model,
+            Set<FuelType> fuelTypes,
+            String color,
+            Integer year,
+            BigDecimal price
+    ) {
+        validateBrand(brand);
+        validateModel(model);
+        validateFuelTypes(fuelTypes);
+        validateColor(color);
+        validateYear(year);
+        validatePrice(price);
+
+        this.brand = brand;
+        this.model = model;
+        this.fuelTypes = fuelTypes;
+        this.color = color;
+        this.year = year;
+        this.price = price;
+    }
+
     public void assignDealer(Dealer dealer) {
+        if (dealer == null) {
+            throw new DomainException("Dealer cannot be null.");
+        }
+
         this.dealer = dealer;
     }
 
-    public void updatePrice(BigDecimal price) {
-        validatePrice(price);
-        this.price = price;
-    }
 }

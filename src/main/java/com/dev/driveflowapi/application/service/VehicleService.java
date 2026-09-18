@@ -3,6 +3,10 @@ package com.dev.driveflowapi.application.service;
 import com.dev.driveflowapi.application.dto.input.vehicle.CreateVehicleInput;
 import com.dev.driveflowapi.application.dto.input.vehicle.UpdateVehicleInput;
 import com.dev.driveflowapi.application.dto.output.vehicle.VehicleOutput;
+import com.dev.driveflowapi.application.mapper.VehicleMapper;
+import com.dev.driveflowapi.domain.exception.DomainException;
+import com.dev.driveflowapi.domain.model.Dealer;
+import com.dev.driveflowapi.domain.model.Vehicle;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
 import com.dev.driveflowapi.domain.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,34 +20,87 @@ public class VehicleService {
 
     private final VehicleRepository vehicleRepository;
     private final DealerRepository dealerRepository;
+    private final VehicleMapper vehicleMapper;
 
-    public VehicleOutput createVehicle(
-             CreateVehicleInput vehicle
-    ) {
+    public VehicleOutput createVehicle(CreateVehicleInput input) {
+        Dealer dealer = dealerRepository
+                .findById(input.dealerId())
+                .orElseThrow(() -> new DomainException("Dealer not found."));
+
+        Vehicle vehicle = vehicleMapper.toDomain(input, dealer);
+
+        Vehicle savedVehicle = vehicleRepository.save(vehicle);
+
+        return vehicleMapper.toOutput(savedVehicle);
 
     }
 
-    public VehicleOutput findById(
-            UUID vehicleId
-    ) {
+    public VehicleOutput findById(UUID vehicleId) {
+
+        Vehicle vehicle = vehicleRepository
+                .findById(vehicleId)
+                .orElseThrow(() -> new DomainException("Vehicle not found."));
+
+        return vehicleMapper.toOutput(vehicle);
     }
 
     public List<VehicleOutput> findAll() {
+
+        return vehicleRepository
+                .findAll()
+                .stream()
+                .map(vehicleMapper::toOutput)
+                .toList();
     }
 
     public VehicleOutput updateVehicle(
             UUID vehicleId,
-            UpdateVehicleInput request
+            UpdateVehicleInput input
     ) {
+
+        Vehicle vehicle = vehicleRepository
+                .findById(vehicleId)
+                .orElseThrow(() -> new DomainException("Vehicle not found."));
+
+        Dealer dealer = dealerRepository
+                .findById(input.dealerId())
+                .orElseThrow(() -> new DomainException("Dealer not found."));
+
+        vehicle.update(
+                input.brand(),
+                input.model(),
+                input.fuelTypes(),
+                input.color(),
+                input.year(),
+                input.price()
+        );
+
+        vehicle.assignDealer(dealer);
+
+        Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+
+        return vehicleMapper.toOutput(updatedVehicle);
     }
 
-    public void deleteById(
-            UUID vehicleId
-    ) {
+    public void deleteById(UUID vehicleId) {
+        vehicleRepository
+                .findById(vehicleId)
+                .orElseThrow(() -> new DomainException("Vehicle not found."));
+
+        vehicleRepository.deleteById(vehicleId);
     }
 
-    public List<VehicleOutput> findByDealerId(
-            UUID dealerId
-    ) {
+    public List<VehicleOutput> findByDealerId(UUID dealerId) {
+
+        dealerRepository
+                .findById(dealerId)
+                .orElseThrow(() -> new DomainException("Dealer not found."));
+
+        return vehicleRepository
+                .findByDealerId(dealerId)
+                .stream()
+                .map(vehicleMapper::toOutput)
+                .toList();
     }
+
 }
