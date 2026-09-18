@@ -1,4 +1,4 @@
-package com.dev.driveflowapi.infrastructure.entity;
+package com.dev.driveflowapi.infrastructure.persistence.entity;
 
 import com.dev.driveflowapi.domain.model.FuelType;
 import jakarta.persistence.*;
