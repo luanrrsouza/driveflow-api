@@ -91,4 +91,21 @@ public class Dealer {
         }
     }
 
+    public void update(
+            String corporateName,
+            String cnpj,
+            String zipCode,
+            String address
+    ) {
+        validateCorporateName(corporateName);
+        validateCnpj(cnpj);
+        validateZipCode(zipCode);
+        validateAddress(address);
+
+        this.corporateName = corporateName;
+        this.cnpj = cnpj;
+        this.zipCode = zipCode;
+        this.address = address;
+    }
+
 }

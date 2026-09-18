@@ -12,4 +12,5 @@ public interface VehicleRepository {
     Optional<Vehicle> findById(UUID id);
     List<Vehicle> findAll();
     void deleteById(UUID id);
+    List<Vehicle> findByDealerId(UUID dealerId);
 }

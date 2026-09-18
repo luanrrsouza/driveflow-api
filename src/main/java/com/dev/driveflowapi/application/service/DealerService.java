@@ -1,11 +1,11 @@
 package com.dev.driveflowapi.application.service;
 
-import com.dev.driveflowapi.application.dto.dealer.CreateDealerRequest;
-import com.dev.driveflowapi.application.dto.dealer.DealerResponse;
-import com.dev.driveflowapi.application.dto.dealer.UpdateDealerRequest;
 import com.dev.driveflowapi.application.dto.input.dealer.CreateDealerInput;
 import com.dev.driveflowapi.application.dto.input.dealer.UpdateDealerInput;
 import com.dev.driveflowapi.application.dto.output.dealer.DealerOutput;
+import com.dev.driveflowapi.application.mapper.DealerMapper;
+import com.dev.driveflowapi.domain.exception.DomainException;
+import com.dev.driveflowapi.domain.model.Dealer;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -17,28 +17,57 @@ import java.util.UUID;
 public class DealerService {
 
     private final DealerRepository dealerRepository;
+    private final DealerMapper dealerMapper;
 
-    public DealerOutput createDealer(
-            CreateDealerInput request
-    ) {
+    public DealerOutput createDealer(CreateDealerInput input) {
+        Dealer dealer = dealerMapper.toDomain(input);
+
+        Dealer savedDealer = dealerRepository.save(dealer);
+
+        return dealerMapper.toOutput(savedDealer);
     }
 
-    public DealerOutput findById(
-            UUID dealerId
-    ) {
+    public DealerOutput findById(UUID dealerId) {
+
+        Dealer dealer = dealerRepository.findById(dealerId).orElseThrow(
+                () -> new DomainException("Dealer not found.")
+        );
+
+        return dealerMapper.toOutput(dealer);
     }
 
     public List<DealerOutput> findAll() {
+
+        return dealerRepository
+                .findAll()
+                .stream()
+                .map(dealerMapper::toOutput)
+                .toList();
     }
 
-    public DealerOutput updateDealer(
-            UUID dealerId,
-            UpdateDealerInput request
-    ) {
+    public DealerOutput updateDealer(UUID dealerId, UpdateDealerInput input)
+    {
+        Dealer dealer = dealerRepository
+                .findById(dealerId)
+                .orElseThrow(() -> new DomainException("Dealer not found."));
+
+        dealer.update(
+                input.corporateName(),
+                input.cnpj(),
+                input.zipCode(),
+                input.address()
+        );
+
+        Dealer updatedDealer = dealerRepository.save(dealer);
+
+        return dealerMapper.toOutput(updatedDealer);
     }
 
-    public void deleteById(
-            UUID dealerId
-    ) {
+    public void deleteById(UUID dealerId) {
+        dealerRepository
+                .findById(dealerId)
+                .orElseThrow(() -> new DomainException("Dealer not found."));
+
+        dealerRepository.deleteById(dealerId);
     }
 }
