@@ -1,4 +1,4 @@
-package com.dev.driveflowapi.infrastructure.entity;
+package com.dev.driveflowapi.infrastructure.persistence.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
