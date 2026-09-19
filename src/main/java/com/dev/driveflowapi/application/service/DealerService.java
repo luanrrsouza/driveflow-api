@@ -2,10 +2,11 @@ package com.dev.driveflowapi.application.service;
 
 import com.dev.driveflowapi.application.dto.input.dealer.CreateDealerInput;
 import com.dev.driveflowapi.application.dto.input.dealer.UpdateDealerInput;
+import com.dev.driveflowapi.application.dto.output.address.AddressOutput;
 import com.dev.driveflowapi.application.dto.output.dealer.DealerOutput;
 import com.dev.driveflowapi.application.mapper.DealerMapper;
+import com.dev.driveflowapi.application.port.out.ZipCodeGateway;
 import com.dev.driveflowapi.domain.exception.DealerNotFoundException;
-import com.dev.driveflowapi.domain.exception.DomainException;
 import com.dev.driveflowapi.domain.model.Dealer;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,20 +21,27 @@ public class DealerService {
 
     private final DealerRepository dealerRepository;
     private final DealerMapper dealerMapper;
+    private final ZipCodeGateway zipCodeGateway;
 
     public DealerOutput createDealer(CreateDealerInput input) {
-        Dealer dealer = dealerMapper.toDomain(input);
 
-        Dealer savedDealer = dealerRepository.save(dealer);
+        AddressOutput address =
+                zipCodeGateway.findByZipCode(input.zipCode());
+
+        Dealer dealer =
+                dealerMapper.toDomain(input, address);
+
+        Dealer savedDealer =
+                dealerRepository.save(dealer);
 
         return dealerMapper.toOutput(savedDealer);
     }
 
     public DealerOutput findById(UUID dealerId) {
 
-        Dealer dealer = dealerRepository.findById(dealerId).orElseThrow(
-                () -> new DomainException("Dealer not found.")
-        );
+        Dealer dealer = dealerRepository
+                .findById(dealerId)
+                .orElseThrow(DealerNotFoundException::new);
 
         return dealerMapper.toOutput(dealer);
     }
@@ -47,25 +55,33 @@ public class DealerService {
                 .toList();
     }
 
-    public DealerOutput updateDealer(UUID dealerId, UpdateDealerInput input)
-    {
+    public DealerOutput updateDealer(
+            UUID dealerId,
+            UpdateDealerInput input
+    ) {
+
         Dealer dealer = dealerRepository
                 .findById(dealerId)
                 .orElseThrow(DealerNotFoundException::new);
 
+        AddressOutput address =
+                zipCodeGateway.findByZipCode(input.zipCode());
+
         dealer.update(
                 input.corporateName(),
                 input.cnpj(),
-                input.zipCode(),
-                input.address()
+                address.zipCode(),
+                address.address()
         );
 
-        Dealer updatedDealer = dealerRepository.save(dealer);
+        Dealer updatedDealer =
+                dealerRepository.save(dealer);
 
         return dealerMapper.toOutput(updatedDealer);
     }
 
     public void deleteById(UUID dealerId) {
+
         dealerRepository
                 .findById(dealerId)
                 .orElseThrow(DealerNotFoundException::new);

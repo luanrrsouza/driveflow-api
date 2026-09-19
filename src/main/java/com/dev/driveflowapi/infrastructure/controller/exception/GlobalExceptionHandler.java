@@ -3,6 +3,7 @@ package com.dev.driveflowapi.infrastructure.controller.exception;
 import com.dev.driveflowapi.domain.exception.DealerNotFoundException;
 import com.dev.driveflowapi.domain.exception.DomainException;
 import com.dev.driveflowapi.domain.exception.VehicleNotFoundException;
+import com.dev.driveflowapi.domain.exception.ZipCodeNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,6 +39,17 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(ZipCodeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleZipCodeNotFoundException(
+            ZipCodeNotFoundException exception
+    ) {
+        return buildResponse(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                null
+        );
+    }
+
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<ErrorResponse> handleDomainException(
             DomainException exception
@@ -53,7 +65,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException exception
     ) {
-
         Map<String, String> fields = new HashMap<>();
 
         exception.getBindingResult()
@@ -76,9 +87,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUnexpectedException(
             Exception exception
     ) {
-
-        exception.printStackTrace();
-
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "An unexpected error occurred.",
@@ -91,7 +99,6 @@ public class GlobalExceptionHandler {
             String message,
             Map<String, String> fields
     ) {
-
         ErrorResponse response = new ErrorResponse(
                 status.value(),
                 status.getReasonPhrase(),
