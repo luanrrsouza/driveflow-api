@@ -11,10 +11,7 @@ public record CreateDealerRequest(
         String cnpj,
 
         @NotBlank(message = "Zip code is required")
-        String zipCode,
-
-        @NotBlank(message = "Address is required")
-        String address
+        String zipCode
 
 ) {
 }
