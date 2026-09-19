@@ -4,7 +4,9 @@ import com.dev.driveflowapi.application.dto.input.vehicle.CreateVehicleInput;
 import com.dev.driveflowapi.application.dto.input.vehicle.UpdateVehicleInput;
 import com.dev.driveflowapi.application.dto.output.vehicle.VehicleOutput;
 import com.dev.driveflowapi.application.mapper.VehicleMapper;
+import com.dev.driveflowapi.domain.exception.DealerNotFoundException;
 import com.dev.driveflowapi.domain.exception.DomainException;
+import com.dev.driveflowapi.domain.exception.VehicleNotFoundException;
 import com.dev.driveflowapi.domain.model.Dealer;
 import com.dev.driveflowapi.domain.model.Vehicle;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
@@ -25,7 +27,7 @@ public class VehicleService {
     public VehicleOutput createVehicle(CreateVehicleInput input) {
         Dealer dealer = dealerRepository
                 .findById(input.dealerId())
-                .orElseThrow(() -> new DomainException("Dealer not found."));
+                .orElseThrow(DealerNotFoundException::new);
 
         Vehicle vehicle = vehicleMapper.toDomain(input, dealer);
 
@@ -39,7 +41,7 @@ public class VehicleService {
 
         Vehicle vehicle = vehicleRepository
                 .findById(vehicleId)
-                .orElseThrow(() -> new DomainException("Vehicle not found."));
+                .orElseThrow(VehicleNotFoundException::new);
 
         return vehicleMapper.toOutput(vehicle);
     }
@@ -60,11 +62,11 @@ public class VehicleService {
 
         Vehicle vehicle = vehicleRepository
                 .findById(vehicleId)
-                .orElseThrow(() -> new DomainException("Vehicle not found."));
+                .orElseThrow(VehicleNotFoundException::new);
 
         Dealer dealer = dealerRepository
                 .findById(input.dealerId())
-                .orElseThrow(() -> new DomainException("Dealer not found."));
+                .orElseThrow(DealerNotFoundException::new);
 
         vehicle.update(
                 input.brand(),
@@ -85,7 +87,7 @@ public class VehicleService {
     public void deleteById(UUID vehicleId) {
         vehicleRepository
                 .findById(vehicleId)
-                .orElseThrow(() -> new DomainException("Vehicle not found."));
+                .orElseThrow(VehicleNotFoundException::new);
 
         vehicleRepository.deleteById(vehicleId);
     }
@@ -94,7 +96,7 @@ public class VehicleService {
 
         dealerRepository
                 .findById(dealerId)
-                .orElseThrow(() -> new DomainException("Dealer not found."));
+                .orElseThrow(DealerNotFoundException::new);
 
         return vehicleRepository
                 .findByDealerId(dealerId)
