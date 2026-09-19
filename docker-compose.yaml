@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: driveflow-postgres
+
+    environment:
+      POSTGRES_DB: driveflow
+      POSTGRES_USER: driveflow
+      POSTGRES_PASSWORD: driveflow
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - driveflow-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  driveflow-postgres-data:

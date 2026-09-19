@@ -1,7 +1,7 @@
 package com.dev.driveflowapi.application.dto.output.vehicle;
 
 import com.dev.driveflowapi.domain.model.FuelType;
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
 
 import java.math.BigDecimal;
 import java.util.Set;

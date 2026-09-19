@@ -7,6 +7,7 @@ import com.dev.driveflowapi.infrastructure.persistence.mapper.VehiclePersistence
 import com.dev.driveflowapi.infrastructure.persistence.repository.VehicleJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class VehicleRepositoryAdapter implements VehicleRepository {
 
     private final VehicleJpaRepository vehicleJpaRepository;
@@ -32,6 +34,7 @@ public class VehicleRepositoryAdapter implements VehicleRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Vehicle> findById(UUID id) {
 
         return vehicleJpaRepository
@@ -40,6 +43,7 @@ public class VehicleRepositoryAdapter implements VehicleRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Vehicle> findAll() {
 
         return vehicleJpaRepository
@@ -50,6 +54,7 @@ public class VehicleRepositoryAdapter implements VehicleRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Vehicle> findByDealerId(UUID dealerId) {
 
         return vehicleJpaRepository

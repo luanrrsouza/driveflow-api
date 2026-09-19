@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record DealerOutput(
         UUID id,
-        String corporareName,
+        String corporateName,
         String cnpj,
         String zipCode,
         String address

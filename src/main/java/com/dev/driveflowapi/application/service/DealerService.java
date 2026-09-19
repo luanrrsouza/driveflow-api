@@ -9,11 +9,12 @@ import com.dev.driveflowapi.domain.exception.DomainException;
 import com.dev.driveflowapi.domain.model.Dealer;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-
+@Service
 @RequiredArgsConstructor
 public class DealerService {
 
