@@ -5,18 +5,18 @@ import com.dev.driveflowapi.application.dto.input.vehicle.UpdateVehicleInput;
 import com.dev.driveflowapi.application.dto.output.vehicle.VehicleOutput;
 import com.dev.driveflowapi.application.mapper.VehicleMapper;
 import com.dev.driveflowapi.domain.exception.DealerNotFoundException;
-import com.dev.driveflowapi.domain.exception.DomainException;
 import com.dev.driveflowapi.domain.exception.VehicleNotFoundException;
 import com.dev.driveflowapi.domain.model.Dealer;
 import com.dev.driveflowapi.domain.model.Vehicle;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
 import com.dev.driveflowapi.domain.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-
+@Service
 @RequiredArgsConstructor
 public class VehicleService {
 
