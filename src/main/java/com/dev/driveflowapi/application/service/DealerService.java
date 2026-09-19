@@ -4,6 +4,7 @@ import com.dev.driveflowapi.application.dto.input.dealer.CreateDealerInput;
 import com.dev.driveflowapi.application.dto.input.dealer.UpdateDealerInput;
 import com.dev.driveflowapi.application.dto.output.dealer.DealerOutput;
 import com.dev.driveflowapi.application.mapper.DealerMapper;
+import com.dev.driveflowapi.domain.exception.DealerNotFoundException;
 import com.dev.driveflowapi.domain.exception.DomainException;
 import com.dev.driveflowapi.domain.model.Dealer;
 import com.dev.driveflowapi.domain.repository.DealerRepository;
@@ -49,7 +50,7 @@ public class DealerService {
     {
         Dealer dealer = dealerRepository
                 .findById(dealerId)
-                .orElseThrow(() -> new DomainException("Dealer not found."));
+                .orElseThrow(DealerNotFoundException::new);
 
         dealer.update(
                 input.corporateName(),
@@ -66,7 +67,7 @@ public class DealerService {
     public void deleteById(UUID dealerId) {
         dealerRepository
                 .findById(dealerId)
-                .orElseThrow(() -> new DomainException("Dealer not found."));
+                .orElseThrow(DealerNotFoundException::new);
 
         dealerRepository.deleteById(dealerId);
     }
