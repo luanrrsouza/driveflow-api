@@ -4,14 +4,17 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CreateDealerRequest(
 
-        @NotBlank(message = "Corporate name is required")
+        @NotBlank(message = "Corporate name is required.")
         String corporateName,
 
-        @NotBlank(message = "CNPJ is required")
+        @NotBlank(message = "CNPJ is required.")
         String cnpj,
 
-        @NotBlank(message = "Zip code is required")
-        String zipCode
+        @NotBlank(message = "Zip code is required.")
+        String zipCode,
+
+        @NotBlank(message = "Address number is required.")
+        String number
 
 ) {
 }

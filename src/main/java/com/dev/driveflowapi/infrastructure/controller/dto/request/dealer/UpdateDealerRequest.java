@@ -11,7 +11,10 @@ public record UpdateDealerRequest(
         String cnpj,
 
         @NotBlank(message = "Zip code is required.")
-        String zipCode
+        String zipCode,
+
+        @NotBlank(message = "Address number is required.")
+        String number
 
 ) {
 }

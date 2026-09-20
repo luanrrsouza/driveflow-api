@@ -7,6 +7,7 @@ public record DealerOutput(
         String corporateName,
         String cnpj,
         String zipCode,
-        String address
+        String address,
+        String number
 ) {
 }
