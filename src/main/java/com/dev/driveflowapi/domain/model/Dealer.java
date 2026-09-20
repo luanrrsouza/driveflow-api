@@ -16,25 +16,28 @@ public class Dealer {
     private String cnpj;
     private String zipCode;
     private String address;
+    private String number;
 
     public Dealer(
             UUID id,
             String corporateName,
             String cnpj,
             String zipCode,
-            String address
+            String address,
+            String number
     ) {
         validateCorporateName(corporateName);
         validateCnpj(cnpj);
         validateZipCode(zipCode);
         validateAddress(address);
+        validateNumber(number);
 
         this.id = id;
         this.corporateName = corporateName;
         this.cnpj = cnpj;
         this.zipCode = zipCode;
         this.address = address;
-
+        this.number = number;
     }
 
     private void validateCorporateName(String corporateName) {
@@ -91,21 +94,32 @@ public class Dealer {
         }
     }
 
+    private void validateNumber(String number) {
+
+        if (number == null || number.isBlank()) {
+            throw new DomainException(
+                    "Address number cannot be empty."
+            );
+        }
+    }
+
     public void update(
             String corporateName,
             String cnpj,
             String zipCode,
-            String address
+            String address,
+            String number
     ) {
         validateCorporateName(corporateName);
         validateCnpj(cnpj);
         validateZipCode(zipCode);
         validateAddress(address);
+        validateNumber(number);
 
         this.corporateName = corporateName;
         this.cnpj = cnpj;
         this.zipCode = zipCode;
         this.address = address;
+        this.number = number;
     }
-
 }

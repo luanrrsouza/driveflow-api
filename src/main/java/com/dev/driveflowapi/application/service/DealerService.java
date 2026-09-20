@@ -71,7 +71,8 @@ public class DealerService {
                 input.corporateName(),
                 input.cnpj(),
                 address.zipCode(),
-                address.address()
+                address.address(),
+                input.number()
         );
 
         Dealer updatedDealer =

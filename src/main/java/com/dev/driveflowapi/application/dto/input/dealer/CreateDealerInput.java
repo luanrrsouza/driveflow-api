@@ -4,6 +4,7 @@ public record CreateDealerInput(
 
         String corporateName,
         String cnpj,
-        String zipCode
+        String zipCode,
+        String number
 ) {
 }

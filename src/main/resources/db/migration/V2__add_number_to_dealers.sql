@@ -1,0 +1,2 @@
+ALTER TABLE dealers
+    ADD COLUMN number VARCHAR(20);
