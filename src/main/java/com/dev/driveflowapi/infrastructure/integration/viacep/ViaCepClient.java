@@ -9,13 +9,14 @@ public class ViaCepClient {
 
     private final RestClient restClient;
 
-    public ViaCepClient(RestClient.Builder builder) {
-        this.restClient = builder
+    public ViaCepClient() {
+        this.restClient = RestClient.builder()
                 .baseUrl("https://viacep.com.br")
                 .build();
     }
 
     public ViaCepResponse findByZipCode(String zipCode) {
+
         return restClient
                 .get()
                 .uri("/ws/{zipCode}/json/", zipCode)

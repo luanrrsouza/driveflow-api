@@ -9,6 +9,8 @@ import com.dev.driveflowapi.infrastructure.controller.dto.request.dealer.UpdateD
 import com.dev.driveflowapi.infrastructure.controller.dto.response.DealerResponse;
 import com.dev.driveflowapi.infrastructure.controller.mapper.DealerControllerMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,58 +34,166 @@ public class DealerController {
     private final DealerControllerMapper dealerControllerMapper;
 
     @PostMapping
-    @Operation(summary = "Create a dealer")
-    public ResponseEntity<DealerResponse> create(@Valid @RequestBody CreateDealerRequest request){
+    @Operation(
+            summary = "Create a dealer",
+            description = "Creates a new dealer and automatically retrieves the address from the provided zip code."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Dealer created successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Zip code not found"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error"
+            )
+    })
+    public ResponseEntity<DealerResponse> create(
+            @Valid @RequestBody CreateDealerRequest request
+    ) {
 
-        CreateDealerInput input = dealerControllerMapper.toInput(request);
+        CreateDealerInput input =
+                dealerControllerMapper.toInput(request);
 
-        DealerOutput output = dealerService.createDealer(input);
+        DealerOutput output =
+                dealerService.createDealer(input);
 
-        DealerResponse response = dealerControllerMapper.toResponse(output);
+        DealerResponse response =
+                dealerControllerMapper.toResponse(output);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
-
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Find dealer by id")
-    public ResponseEntity<DealerResponse> findById(@PathVariable UUID id) {
+    @Operation(
+            summary = "Find dealer by id",
+            description = "Returns a dealer identified by its UUID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Dealer found successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Dealer not found"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error"
+            )
+    })
+    public ResponseEntity<DealerResponse> findById(
+            @PathVariable UUID id
+    ) {
 
-        DealerOutput output = dealerService.findById(id);
+        DealerOutput output =
+                dealerService.findById(id);
 
-        DealerResponse response = dealerControllerMapper.toResponse(output);
+        DealerResponse response =
+                dealerControllerMapper.toResponse(output);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    @Operation(summary = "List all dealers")
+    @Operation(
+            summary = "List all dealers",
+            description = "Returns all registered dealers."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Dealers returned successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error"
+            )
+    })
     public ResponseEntity<List<DealerResponse>> findAll() {
+
         List<DealerResponse> response = dealerService
                 .findAll()
                 .stream()
                 .map(dealerControllerMapper::toResponse)
                 .toList();
+
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a dealer")
-    public ResponseEntity<DealerResponse> update(@PathVariable UUID id, @Valid @RequestBody UpdateDealerRequest request) {
+    @Operation(
+            summary = "Update a dealer",
+            description = "Updates an existing dealer and refreshes its address using the provided zip code."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Dealer updated successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Dealer or zip code not found"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error"
+            )
+    })
+    public ResponseEntity<DealerResponse> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateDealerRequest request
+    ) {
 
-        UpdateDealerInput input = dealerControllerMapper.toInput(request);
-        DealerOutput output = dealerService.updateDealer(id, input);
-        DealerResponse response = dealerControllerMapper.toResponse(output);
+        UpdateDealerInput input =
+                dealerControllerMapper.toInput(request);
+
+        DealerOutput output =
+                dealerService.updateDealer(id, input);
+
+        DealerResponse response =
+                dealerControllerMapper.toResponse(output);
 
         return ResponseEntity.ok(response);
-
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a dealer")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    @Operation(
+            summary = "Delete a dealer",
+            description = "Deletes an existing dealer by its UUID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Dealer deleted successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Dealer not found"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error"
+            )
+    })
+    public ResponseEntity<Void> delete(
+            @PathVariable UUID id
+    ) {
 
         dealerService.deleteById(id);
 
@@ -91,6 +201,4 @@ public class DealerController {
                 .noContent()
                 .build();
     }
-
-
 }
