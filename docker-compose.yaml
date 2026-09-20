@@ -1,4 +1,5 @@
 services:
+
   postgres:
     image: postgres:17
     container_name: driveflow-postgres
@@ -13,6 +14,31 @@ services:
 
     volumes:
       - driveflow-postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U driveflow -d driveflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  driveflow-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: driveflow-api
+
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/driveflow
+      DB_USER: driveflow
+      DB_PASSWORD: driveflow
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   driveflow-postgres-data:
